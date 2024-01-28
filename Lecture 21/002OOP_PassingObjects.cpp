@@ -62,6 +62,7 @@ int main() {
 	c2.credits = 0;
 
 	// printByValue(c2);
+	// printByRef(c2);
 	printByConstRef(c2);
 
 
