@@ -1,4 +1,5 @@
 #include<iostream>
+#include<string>
 
 using namespace std;
 
@@ -21,7 +22,7 @@ TreeNode* buildTree() {
 
 	// base case
 
-	if(val == -1) {
+	if (val == -1) {
 		// construct an empty tree and return pointer to its root TreeNode
 		return NULL;
 	}
@@ -39,11 +40,51 @@ TreeNode* buildTree() {
 	// 3. ask your friend to construct the rightSubtree from the preOrder traversal of the rightSubtree
 
 	root->right = buildTree();
-	
+
 	return root;
 
 }
 
+string tree2str(TreeNode* root) {
+
+	// base case
+
+	if (root == NULL) {
+
+		// tree is empty
+		return "";
+
+	}
+
+	// recursive case
+
+	// 1. recursively, build the string for the leftSubtree
+
+	string leftRepr = tree2str(root->left);
+
+	// 2. recursively, build the string for the rightSubtree
+
+	string rightRepr = tree2str(root->right);
+
+	if (root->left != NULL and root->right != NULL) {
+
+		return to_string(root->val) + "(" + leftRepr + ")(" + rightRepr + ")";
+
+	} else if (root->left != NULL) {
+
+		return to_string(root->val) + "(" + leftRepr + ")";
+
+	} else if (root->right != NULL) {
+
+		return to_string(root->val) + "()(" + rightRepr + ")";
+
+	} else {
+
+		return to_string(root->val);
+
+	}
+
+}
 
 int main() {
 
