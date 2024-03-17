@@ -19,12 +19,49 @@ public :
 
 };
 
+
 vector<int> path;
-// bool flag = false; // assume, we have not yet found the path to the target node
+bool flag = false; // assume, we have not yet found the path to the target node
 
 void generatePath(TreeNode* root, int target) {
 
-	// todo ...
+	// base case
+
+	if (root == NULL) {
+		return;
+	}
+
+	if (root->val == target) {
+
+		// you've reached the target node
+
+		flag = true;
+
+		path.push_back(target);
+
+		for (int i = 0; i < path.size(); i++) {
+			cout << path[i] << " ";
+		}
+
+		cout << endl;
+
+		path.pop_back();
+
+		return;
+
+	}
+
+	// recursive case
+
+	path.push_back(root->val);
+
+	generatePath(root->left, target);
+
+	if (flag == true) return;
+
+	generatePath(root->right, target);
+
+	path.pop_back(); // backtracking
 
 }
 
@@ -37,14 +74,14 @@ int main() {
 	root->left = new TreeNode(7);
 	root->left->left = new TreeNode(3);
 	root->left->left->left = new TreeNode(1);
-	root->left->left->right = new TreeNode(9);
+	root->left->left->right = new TreeNode(8);
 	root->left->right = new TreeNode(8);
 
 	root->right = new TreeNode(6);
 	root->right->left = new TreeNode(4);
 	root->right->right = new TreeNode(5);
 
-	int target = 5;
+	int target = 8;
 
 	generatePath(root, target);
 

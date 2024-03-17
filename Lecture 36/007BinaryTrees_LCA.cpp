@@ -19,10 +19,73 @@ public :
 
 };
 
+// time : O(n)
+// space: only due to function call O(n) if tree is skewed, O(logn) if tree is balanced
+// space : O(h) where h is the height of the tree
+
+// binary lifting ??
+
+TreeNode* lcaHelper(TreeNode* root, TreeNode* p, TreeNode* q) {
+
+	// base case
+
+	if (root == NULL) {
+
+		// tree is empty
+
+		return NULL;
+
+	}
+
+	if (root->val == p->val) {
+
+		// lca(p, q) = p in the subtree of root
+
+		return p;
+
+	}
+
+	if (root->val == q->val) {
+
+		// lca(p, q) = q in the subtree of root
+
+		return q;
+
+	}
+
+	// recursive case
+
+	// org. problem : find the lca of p and q in the given tree
+
+	// 1. recursively, find the lca of p and q in the leftSubtree
+
+	TreeNode* left = lcaHelper(root->left, p, q);
+
+	// 2. recursively, find the lca of p and q in the rightSubtree
+
+	TreeNode* right = lcaHelper(root->right, p, q);
+
+	if (left != NULL and right != NULL) {
+
+		return root;
+
+	} else if (left != NULL) { // right == NULL
+
+		return left;
+
+	} else if (right != NULL) { // left == NULL
+
+		return right;
+
+	}
+
+	return NULL; // left == NULL and right == NULL
+
+}
 
 TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
 
-	// todo ...
+	return lcaHelper(root, p, q); // dfs
 
 }
 
