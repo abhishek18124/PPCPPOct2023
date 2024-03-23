@@ -2,7 +2,7 @@
 
 given the pre-order traversal of a binary tree, output its level-order traversal.
 
-Example 
+Example
 	Input : 10 20 40 -1 -1 50 70 -1 -1 -1 30 -1 60 -1 -1
 	Output: 10 20 30 40 50 60 70
 */
@@ -30,7 +30,7 @@ TreeNode* buildTree() {
 	int val;
 	cin >> val;
 
-	if(val == -1) {
+	if (val == -1) {
 		// construct an empty tree and return the pointer to its root
 		return NULL;
 	}
@@ -45,6 +45,42 @@ TreeNode* buildTree() {
 	root->right = buildTree();
 
 	return root;
+
+}
+
+void printLevelOrder(TreeNode* root) {
+
+	queue<TreeNode*> q;
+	q.push(root);
+
+	while (!q.empty()) {
+
+		TreeNode* front = q.front();
+		q.pop();
+
+		// process the 'front' node
+
+		cout << front->val << " ";
+
+		if (front->left != NULL) {
+
+			// visit the leftChild of the front node
+
+			q.push(front->left);
+
+		}
+
+		if (front->right != NULL) {
+
+			// visit the rightChild of the front node
+
+			q.push(front->right);
+
+		}
+
+	}
+
+	cout << endl;
 
 }
 

@@ -86,11 +86,87 @@ int computeHeight(TreeNode* root) {
 
 }
 
+// time : O(n^2)
+
 int computeDiameter(TreeNode* root) {
 
 	// base case
 
+	if (root == NULL) {
+
+		// tree is empty
+
+		return 0;
+
+	}
+
 	// recursive case
+
+	// compute the diameter of the given tree
+
+	// 1. recursively, compute the diamter of the leftSubtree
+
+	int leftDiameter = computeDiameter(root->left);
+
+	// 2. recursively, compute the diamter of the rightSubtree
+
+	int rightDiameter = computeDiameter(root->right);
+
+	// 3. find the length of the longest b/w any two nodes that goes through the root node
+
+	int rootLongestPathLength = computeHeight(root->left) + computeHeight(root->right) + 2; // linear time
+
+	return max(leftDiameter, max(rightDiameter, rootLongestPathLength));
+
+}
+
+class Pair {
+
+public :
+
+	int height;
+	int diameter;
+
+};
+
+// time : O(n)
+// space: O(h) due to the function call stack
+
+Pair computeDiameterEfficient(TreeNode* root) {
+
+	Pair p;
+
+	// base case
+
+	if (root == NULL) {
+
+		p.height = -1;
+		p.diameter = 0;
+		return p;
+
+	}
+
+	// recursive case
+
+	// compute the diamter of the given binary tree
+
+	// 1. recursively, compute the diameter and height of the leftSubtree
+
+	Pair left = computeDiameterEfficient(root->left);
+
+	// 2. recursively, compute the diameter and height of the rightSubtree
+
+	Pair right = computeDiameterEfficient(root->right);
+
+	// 3. compute the len of the longest path that goes through the root node
+
+	int rootLongestPathLength = left.height + right.height + 2;
+
+	p.height = 1 + max(left.height, right.height);
+	p.diameter = max(left.diameter, max(right.diameter, rootLongestPathLength));
+
+	return p;
+
 
 }
 
@@ -99,6 +175,10 @@ int main() {
 	TreeNode* root = buildTree();
 
 	cout << computeDiameter(root) << endl;
+
+	Pair p = computeDiameterEfficient(root);
+
+	cout << p.diameter << endl;
 
 	return 0;
 }

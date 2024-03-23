@@ -1,10 +1,10 @@
 /*
 
-given the pre-order traversal of a binary tree, output its level-order traversal.
+given the pre-order traversal of a binary tree, output its right view.
 
 Example
 	Input : 10 20 40 -1 -1 50 70 -1 -1 -1 30 -1 60 -1 -1
-	Output: 10 20 30 40 50 60 70
+	Output: 10 30 60 70
 */
 
 #include<iostream>
@@ -48,65 +48,41 @@ TreeNode* buildTree() {
 
 }
 
-void printLevelOrder(TreeNode* root) {
+int maxLevel = -1; // to track the maximum level upto which you have printed the leftmost node
 
-	queue<TreeNode*> q;
-	q.push(root);
-	q.push(NULL);
+void printLeftViewRecursive(TreeNode* root, int level) {
 
-	while (!q.empty()) {
+	// base case
 
-		TreeNode* front = q.front();
-		q.pop();
+	if (root == NULL) {
+		return;
+	}
 
-		if (front == NULL) {
+	// recursive case
 
-			// last level has been processed
+	if (level > maxLevel) {
 
-			cout << endl;
+		// root is the rightmost node of the current level
 
-			if (!q.empty()) {
-
-				// next level has been visited
-
-				q.push(NULL);
-
-			}
-
-		} else {
-
-			// process the front node
-
-			cout << front->val << " ";
-
-			if (front->left != NULL) {
-
-				// visit the leftChild of the front node
-
-				q.push(front->left);
-
-			}
-
-			if (front->right != NULL) {
-
-				// visit the rightChild of the front node
-
-				q.push(front->right);
-
-			}
-
-
-		}
+		cout << root->val << " ";
+		maxLevel = level;
 
 	}
 
+	printLeftViewRecursive(root->left, level + 1);
+	printLeftViewRecursive(root->right, level + 1);
+
 }
+
 
 int main() {
 
-	TreeNode* root = buildTree();
+	TreeNode* root = NULL;
+	root = buildTree();
 
-	printLevelOrder(root);
+	printLeftViewRecursive(root, 0);
+
+	cout << endl;
 
 	return 0;
 }

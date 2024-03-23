@@ -83,11 +83,119 @@ int computeHeight(TreeNode* root) {
 
 }
 
+// time : O(n^2)
+// space: O(h) due to function call stack
+
 bool checkHeightBalanced(TreeNode* root) {
 
 	// base case
 
+	if (root == NULL) {
+
+		// tree is empty
+
+		return true;
+
+	}
+
 	// recursive case
+
+	// check if the given tree is height balanced or not
+
+	// 1. recursively, check if the leftSubtree is height-balanced ?
+
+	bool leftIsBalanced = checkHeightBalanced(root->left);
+
+	// 2. recursively, check if the rightSubtree is height-balanced ?
+
+	bool rightIsBalanced = checkHeightBalanced(root->right);
+
+	// 3. check if the height-balance property is satisfid at the root node ?
+
+	bool rootIsBalanced = abs(computeHeight(root->left) - computeHeight(root->right)) <= 1 ? true : false;
+
+	return leftIsBalanced and rightIsBalanced and rootIsBalanced;
+
+}
+
+class Pair {
+
+public:
+	int height;
+	bool isBalanced;
+
+};
+
+// time : O(n)
+
+Pair checkHeightBalancedEfficient(TreeNode* root) {
+
+	Pair p;
+
+	// base case
+
+	if (root == NULL) {
+
+		p.height = -1;
+		p.isBalanced = true;
+		return p;
+
+	}
+
+	// recursive case
+
+	// 1. recursively, check if the leftSubtree is height-balanced or not and simultaneously calculate the height of the leftSubtree
+
+	Pair left = checkHeightBalancedEfficient(root->left);
+
+	// 2. recursively, check if the rightSubtree is height-balanced or not and simultaneously calculate the height of the rightSubtree
+
+	Pair right = checkHeightBalancedEfficient(root->right);
+
+	// 3. check if the height-balanced property is satisfied at the root node
+
+	bool rootIsBalanced = abs(left.height - right.height) <= 1 ? true : false;
+
+	p.height = 1 + max(left.height, right.height);
+	p.isBalanced = left.isBalanced and right.isBalanced and rootIsBalanced;
+
+	return p;
+
+}
+
+
+pair<int, bool> checkHeightBalancedEfficientTwo(TreeNode* root) { // first = height, second = isBalanced
+
+	pair<int, bool> p;
+
+	// base case
+
+	if (root == NULL) {
+
+		p.first = -1;
+		p.second = true;
+		return p;
+
+	}
+
+	// recursive case
+
+	// 1. recursively, check if the leftSubtree is height-balanced or not and simultaneously calculate the height of the leftSubtree
+
+	pair<int, bool> left = checkHeightBalancedEfficientTwo(root->left);
+
+	// 2. recursively, check if the rightSubtree is height-balanced or not and simultaneously calculate the height of the rightSubtree
+
+	pair<int, bool> right = checkHeightBalancedEfficientTwo(root->right);
+
+	// 3. check if the height-balanced property is satisfied at the root node
+
+	bool rootIsBalanced = abs(left.first - right.first) <= 1 ? true : false;
+
+	p.first = 1 + max(left.first, right.first);
+	p.second = left.second and right.second and rootIsBalanced;
+
+	return p;
 
 }
 
@@ -98,6 +206,14 @@ int main() {
 	checkHeightBalanced(root) ? cout << "height-balanced!" << endl :
 	                                 cout << "not height-balanced" << endl;
 
+
+	Pair p = checkHeightBalancedEfficient(root);
+
+	p.isBalanced ? cout << "height-balanced" << endl : cout << "not height-balanced" << endl;
+
+	pair<int, bool> pp = checkHeightBalancedEfficientTwo(root);
+
+	pp.second ? cout << "height-balanced" << endl : cout << "not height-balanced" << endl;
 
 	return 0;
 }

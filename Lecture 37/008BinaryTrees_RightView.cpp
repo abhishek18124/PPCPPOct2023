@@ -48,12 +48,103 @@ TreeNode* buildTree() {
 
 }
 
+void printRightViewItertive(TreeNode* root) {
+
+	queue<TreeNode*> q;
+	q.push(root);
+	q.push(NULL);
+
+	while (!q.empty()) {
+
+		TreeNode* front = q.front();
+		q.pop();
+
+		if (front == NULL) {
+
+			// last level has been processed
+
+			if (!q.empty()) {
+
+				// next level has been visited
+
+				q.push(NULL);
+
+			}
+
+		} else {
+
+			// process the front node
+
+			if (q.front() == NULL) {
+
+				// front node is the rightmost node of the current level
+
+				cout << front->val << " ";
+
+			}
+
+			if (front->left != NULL) {
+
+				// visit the leftChild of the front node
+
+				q.push(front->left);
+
+			}
+
+			if (front->right != NULL) {
+
+				// visit the rightChild of the front node
+
+				q.push(front->right);
+
+			}
+
+
+		}
+
+	}
+
+}
+
+int maxLevel = -1; // to track the maximum level upto which you have printed the rightmost node
+
+void printRightViewRecursive(TreeNode* root, int level) {
+
+	// base case
+
+	if (root == NULL) {
+		return;
+	}
+
+	// recursive case
+
+	if (level > maxLevel) {
+
+		// root is the rightmost node of the current level
+
+		cout << root->val << " ";
+		maxLevel = level;
+
+	}
+
+	printRightViewRecursive(root->right, level + 1);
+	printRightViewRecursive(root->left, level + 1);
+
+}
+
+
 int main() {
 
 	TreeNode* root = NULL;
 	root = buildTree();
 
-	// todo ...
+	printRightViewItertive(root);
+
+	cout << endl;
+
+	printRightViewRecursive(root, 0);
+
+	cout << endl;
 
 	return 0;
 }

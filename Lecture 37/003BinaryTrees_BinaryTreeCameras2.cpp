@@ -19,18 +19,9 @@ public :
 
 };
 
-class Triple {
-public :
+int numCameras = 0;
 
-	int numCameras;
-	bool isMonitored;
-	bool hasCamera;
-
-};
-
-Triple helper(TreeNode* root) {
-
-	Triple t;
+int helper(TreeNode* root) {
 
 	// base case
 
@@ -38,58 +29,46 @@ Triple helper(TreeNode* root) {
 
 		// tree is empty
 
-		t.numCameras = 0;
-		t.isMonitored = true;
-		t.hasCamera = false;
-
-		return t;
+		return 1;
 
 	}
 
 	// recursive case
 
-	Triple left = helper(root->left);
-	Triple right = helper(root->right);
-
 	// make a decision for the root node
 
-	// option 1 : install camera at the root node
+	int leftStatus = helper(root->left);
+	int rightStatus = helper(root->right);
 
-	if (!left.isMonitored || !right.isMonitored) {
+	if (leftStatus == 0 || rightStatus == 0) {
 
 		// install camera at the root node
 
-		t.numCameras = left.numCameras + right.numCameras + 1;
-		t.isMonitored = true;
-		t.hasCamera = true;
-
-		return t;
+		numCameras++;
+		return 2;
 
 	}
 
-	// option 2: don't install camera at the root node
+	// don't install camera at the root node
 
-	t.numCameras = left.numCameras + right.numCameras;
-	t.isMonitored = left.hasCamera || right.hasCamera ? true : false;
-	t.hasCamera = false;
+	return leftStatus == 2 || rightStatus == 2 ? 1 : 0;
 
-	return t;
 
 }
 
 int minCameraCover(TreeNode* root) {
 
-	Triple t = helper(root);
+	int status = helper(root);
 
-	if (t.isMonitored == false) {
+	if (status == 0) {
 
 		// root node of the given binary tree is not monitored, therefore install a camera at the root node
 
-		return 1 + t.numCameras;
+		numCameras++;
 
 	}
 
-	return t.numCameras;
+	return numCameras;
 
 }
 

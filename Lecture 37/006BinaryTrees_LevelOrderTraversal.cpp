@@ -48,57 +48,43 @@ TreeNode* buildTree() {
 
 }
 
+// time : O(n)
+// space: O(max. no. of nodes in a level) due to queue
+// max. no. of nodes in a level ~ n/2 when given binary tree is perfect
+
 void printLevelOrder(TreeNode* root) {
 
 	queue<TreeNode*> q;
 	q.push(root);
-	q.push(NULL);
 
 	while (!q.empty()) {
 
 		TreeNode* front = q.front();
 		q.pop();
 
-		if (front == NULL) {
+		// process the 'front' node
 
-			// last level has been processed
+		cout << front->val << " ";
 
-			cout << endl;
+		if (front->left != NULL) {
 
-			if (!q.empty()) {
+			// visit the leftChild of the front node
 
-				// next level has been visited
+			q.push(front->left);
 
-				q.push(NULL);
+		}
 
-			}
+		if (front->right != NULL) {
 
-		} else {
+			// visit the rightChild of the front node
 
-			// process the front node
-
-			cout << front->val << " ";
-
-			if (front->left != NULL) {
-
-				// visit the leftChild of the front node
-
-				q.push(front->left);
-
-			}
-
-			if (front->right != NULL) {
-
-				// visit the rightChild of the front node
-
-				q.push(front->right);
-
-			}
-
+			q.push(front->right);
 
 		}
 
 	}
+
+	cout << endl;
 
 }
 
