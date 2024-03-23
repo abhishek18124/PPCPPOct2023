@@ -69,6 +69,39 @@ void printInOrder(TreeNode* root) {
 	printInOrder(root->right);
 }
 
+int i = 0; // to iterate over the preOrder
+
+TreeNode* buildTree(int pre[], int in[], int s, int e) {
+
+	if (s > e) {
+		return NULL;
+	}
+
+	int x = pre[i];
+	i++;
+
+	TreeNode* root = new TreeNode(x);
+
+	int k;
+	for (int j = s; j <= e; j++) {
+		if (in[j] == x) {
+			k = j;
+			break;
+		}
+	}
+
+	// recursively, build the leftSubtree of 'x' using its inOrder s to k-1
+
+	root->left = buildTree(pre, in, s, k - 1);
+
+	// recursively, build the rightSubtree of 'x' using its inOrder k+1 to e
+
+	root->right = buildTree(pre, in, k + 1, e);
+
+	return root;
+
+}
+
 
 int main() {
 
