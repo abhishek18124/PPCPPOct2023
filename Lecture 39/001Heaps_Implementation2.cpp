@@ -9,7 +9,7 @@
 
 using namespace std;
 
-class minHeap {
+class maxHeap {
 
 	vector<int> v;
 
@@ -17,24 +17,24 @@ class minHeap {
 
 		// fixes the heap property at index i
 
-		int minIdx = i;
+		int maxIdx = i;
 
 		int leftIdx = 2 * i + 1;
-		if (leftIdx < v.size() and v[leftIdx] < v[minIdx]) {
-			minIdx = leftIdx;
+		if (leftIdx < v.size() and v[leftIdx] > v[maxIdx]) {
+			maxIdx = leftIdx;
 		}
 
 		int rightIdx = 2 * i + 2;
-		if (rightIdx < v.size() and v[rightIdx] < v[minIdx]) {
-			minIdx = rightIdx;
+		if (rightIdx < v.size() and v[rightIdx] > v[maxIdx]) {
+			maxIdx = rightIdx;
 		}
 
-		if (minIdx != i) {
+		if (maxIdx != i) {
 
 			// heap property is actually violated at index i
 
-			swap(v[i], v[minIdx]);
-			heapify(minIdx);
+			swap(v[i], v[maxIdx]);
+			heapify(maxIdx);
 
 		}
 
@@ -51,7 +51,7 @@ public :
 		int childIdx = v.size() - 1;
 		int parentIdx = childIdx % 2 == 1 ? childIdx / 2 : childIdx / 2 - 1;
 
-		while (parentIdx >= 0 and v[childIdx] < v[parentIdx]) {
+		while (parentIdx >= 0 and v[childIdx] > v[parentIdx]) {
 			swap(v[childIdx], v[parentIdx]);
 			childIdx = parentIdx;
 			parentIdx = childIdx % 2 == 1 ? childIdx / 2 : childIdx / 2 - 1;
@@ -87,7 +87,7 @@ public :
 
 int main() {
 
-	minHeap m;
+	maxHeap m;
 
 	m.push(9);
 	m.push(7);
