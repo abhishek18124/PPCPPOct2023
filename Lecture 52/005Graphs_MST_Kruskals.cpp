@@ -2,6 +2,7 @@
 #include<unordered_map>
 #include<set>
 #include<vector>
+#include<algorithm>
 
 using namespace std;
 
@@ -78,25 +79,32 @@ public :
 		vertexSet.insert(v);
 	}
 
-	vector<edge<T>> kruskal() {
+	vector<edge<T>> kruskal() { // time : V + ElogE + E ~ O(ElogE) space : O(V) due to ds + space for sort()
 		disjointSet<T> ds;
 
 		// 1. create a set corresponding to each graph vertex
-		for (T vertex : vertexSet) {
-			ds.createSet(vertex);
+		for (T vertex : vertexSet) { // time - O(V)
+			ds.createSet(vertex); // const
 		}
 
 		// 2. sort list of edges
-		sort(edgeList.begin(), edgeList.end(), edgeComparator<T>);
+		sort(edgeList.begin(), edgeList.end(), edgeComparator<T>); // O(ElogE)
 
 		// 3. construct MST
 		vector<edge<T>> mst;
-		for (edge<T> e : edgeList) {
+		int mstSum = 0;
+		for (edge<T> e : edgeList) { // E.const ~ O(E)
 			if (ds.findSet(e.u) != ds.findSet(e.v)) {
 				ds.unionSet(e.u, e.v);
 				mst.push_back(e);
+				mstSum += e.w;
+				if (mst.size() == vertexSet.size() - 1) {
+					break;
+				}
 			}
 		}
+
+		cout << mstSum << endl;
 
 		return mst;
 	}

@@ -1,5 +1,5 @@
-/* 
-	
+/*
+
 	Implementation of the disjoint set union data structure.
 
 */
@@ -13,19 +13,35 @@ template <typename T>
 class disjointSet {
 
 	unordered_map<T, T> parentMap; // to store a mapping b/w vertices & their parents
-	
-	public :
+
+public :
 
 	void createSet(T x) {
-		// todo ...
+		parentMap[x] = x; // const time
 	}
 
 	T findSet(T x) {
-		// todo ...
+		// base case
+		if (parentMap[x] == x) {
+			return x;
+		}
+
+		// recursive case
+
+		return findSet(parentMap[x]);
 	}
 
 	void unionSet(T x, T y) {
-		// todo ...
+
+		T lx = findSet(x);
+		T ly = findSet(y);
+
+		if (lx != ly) {
+
+			parentMap[lx] = ly; // parentMap[ly] = lx
+
+		}
+
 	}
 
 };
@@ -41,15 +57,20 @@ int main() {
 
 	ds.unionSet(2, 3);
 
+	cout << ds.findSet(2) << endl;
 	cout << ds.findSet(3) << endl;
 
 	ds.unionSet(1, 4);
 
+	cout << ds.findSet(1) << endl;
 	cout << ds.findSet(4) << endl;
 
 	ds.unionSet(3, 4);
 
+	cout << ds.findSet(1) << endl;
 	cout << ds.findSet(2) << endl;
+	cout << ds.findSet(3) << endl;
+	cout << ds.findSet(4) << endl;
 
 	return 0;
 }
